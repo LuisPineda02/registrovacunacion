@@ -1,0 +1,59 @@
+<?php
+require 'database.php';
+
+$message = '';
+
+if(!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['dpi']) && !empty($_POST['puesto de vacunacion']) && !empty($_POST['tipo de vacuna']) && !empty($_POST['fecha de primera dosis']) && !empty($_POST['fecha de segunda dosis']) && !empty($_POST['fecha de refuerzo']))
+{
+    $sql = "INSERT INTO vacunados (nombre,apellido,dpi,puesto de vacunacion,tipo de vacuna, fecha de primera dosis, fehca de segunda dosis, fecha de refuerzo) VALUES (:nombre, :apellido, :dpi, :puesto de vacunacion, :tipo de vacuna, :fecha de primera dosis, :fecha de segunda dosis, :fecha de refuerzo)";
+    $stmt = $conn->prepare($sql);
+  
+    $stmt->bindParam(':nombre', $_POST['nombre']);
+    $stmt->bindParam(':apellido', $_POST['apellido']);
+    $stmt->bindParam(':dpi', $_POST['dpi']);
+    $stmt->bindParam(':puesto de vacunacion', $_POST['puesto de vacunacion']);
+    $stmt->bindParam(':tipo de vacuna', $_POST['tipo de vacuna']);
+    $stmt->bindParam(':fecha de primera dosis', $_POST['fecha de primera dosis']);
+    $stmt->bindParam(':fecha de segunda dosis', $_POST['fecha de segunda dosis']);
+    $stmt->bindParam(':fecha de refuerzo', $_POST['fecha de refuerzo']);
+
+    if($stmt->execute())
+    {
+        $message = 'Se a registrado el usuario vacunado ';
+    }
+    else
+    {
+        $message = 'Lo lamento, ha acurrido un error de registro';
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGISTRO DE VACUNADOS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="complemento/styles.css">
+</head>
+<body>
+    
+<?php require 'partes/cabecera.php' ?>
+
+<h1>Registro Vacunados</h1>
+
+<form action="vacunados.php" method="POST">   
+    <input type="text" name="nombre" placeholder="Ingrese el nombre">
+    <input type="text" name="apellido" placeholder="Ingrese el apellido">
+    <input type="text" name="dpi" placeholder="ingrese el no de dpi">
+    <input type="text" name="puesto de vacunacion" placeholder="Ingrese el puesto de vacunacion">
+    <input type="text" name="tipo de vacuna" placeholder="Ingrese el nombre del tipo de vacuna">
+    <input type="text" name="fecha de primera dosis" placeholder="Ingrese la fecha de primera dosis">
+    <input type="text" name="fecha de segunda dosis" placeholder="Ingrese la fecha de segunda dosis">
+    <input type="text" name="fecha de refuerzo " placeholder="Ingrese la fecha de refuerzo">
+    <input type="submit" value="Registrar">
+    </form>
+</body>
+</html>
